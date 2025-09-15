@@ -1,0 +1,23 @@
+
+client = OpenAI("yVfPI8ROMQA")
+
+
+docker run -d --name gitlab-runner --restart always -v /srv/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
+
+
+docker run -d --name gitlab-runner --restart always -v /var/run/docker.sock:/var/run/docker.sock -v gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner:latest
+
+docker run --rm -it -v gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner:latest register
+
+docker run --rm -it -v gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner:latest register --url "https://gitlab.com/" --token "glrt-BqsStlXWgQnZW4kqofPXHW86MQpwOjE4M3Ryawp0OjMKdTpodjBpdBg.01.1j0lpfq5u"
+
+.\gitlab-runner.exe register  --url https://gitlab.com  --token glrt-7hsjc1nTrUBsAdFhNB8k6286MQpwOjE4Ymcxegp0OjMKdTpodjBpdBg.01.1j04lmz12
+
+
+docker run -d --name gitlab-runner --restart always -v /var/run/docker.sock:/var/run/docker.sock -v gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner:latest
+
+C:\Users\payal bansal>docker logs -f gitlab-runner
+Runtime platform     
+
+shell-runner
+.\gitlab-runner.exe register  --url https://gitlab.com  --token glrt-7hsjc1nTrUBsAdFhNB8k6286MQpwOjE4Ymcxegp0OjMKdTpodjBpdBg.01.1j04lmz12
