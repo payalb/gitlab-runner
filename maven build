@@ -1,0 +1,51 @@
+image: maven:3.9.11-eclipse-temurin-21-alpine  # Maven with Java 17 (adjust version if needed)
+
+stages:
+  - build
+  - test
+  - package
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"   # cache local repo
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .m2/repository
+
+before_script:
+  - echo "Using Java & Maven inside GitLab Runner"
+  - java -version
+  - mvn -v
+
+build:
+  stage: build
+  tags: 
+    - test   # 👈 use the tag you gave your runner
+  script:
+    - mvn $MAVEN_CLI_OPTS clean compile
+  when: manual
+
+test:
+  stage: test
+  tags: 
+    - test   # 👈 use the tag you gave your runner
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+  artifacts:
+    when:   
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+
+package:
+  stage: package
+  tags: 
+    - test   # 👈 use the tag you gave your runner
+  script:
+    - mvn $MAVEN_CLI_OPTS package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 1 week
+  when: manual
